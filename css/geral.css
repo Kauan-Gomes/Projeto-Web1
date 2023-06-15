@@ -1,0 +1,16 @@
+@import url(main.css);
+@import url(header.css);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
+
+:root {
+    --cor-principal: linear-gradient( to top, #a0c3f8, #5c6ec0);;
+    --cor-secundaria: #8fc6cf;
+    --cor-branca:#ffffff;
+    --Fonte-principal: 'Montserrat';
+    font-family: var(--Fonte-principal);
+}
+
+body{
+    position: relative;
+}

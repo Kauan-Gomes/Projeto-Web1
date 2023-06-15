@@ -1,0 +1,101 @@
+
+.Fundo__principal {
+    background-image: var(--cor-principal);
+}
+
+.cabecalho{
+    display: flex;
+    justify-content: center;
+    font-size: 60px;
+    align-items: center;
+    padding: 0.3em 1em ;
+    height: 100px;
+}
+
+.titulo {
+    font-weight: 700;
+    color: var(--cor-branca);
+    align-items: center;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.nuvem{
+    margin-right: 40%;
+    margin-top: 20px;
+}
+
+
+
+.adicionar{
+    font-size: 40px;
+    background-color: var(--cor-secundaria);
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 0.5px solid var(--cor-branca);
+    background: transparent;
+    color: var(--cor-branca);
+}
+
+.adicionar:hover{
+    background: #5c6ec0;
+    border: 1px ;
+    color: black;
+    
+}
+
+.ParteDeForaModal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: #000000af;
+    
+    
+}
+.modal{
+    box-shadow: 1px 5px 1px 8px #311c7e77;
+}
+
+.ParteDeForaModal .modal{
+    background-image: var(--cor-principal);
+    margin: 15% auto; 
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%; 
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 0px 0;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--cor-branca);
+}
+
+.form__input__container{
+    margin-top: 20px;
+    
+}
+
+.form__input__container > input, button{
+    height: 30px;
+}
+
+#search {
+    background-color: var(--cor-branca);
+    border: 0;
+    width: 40px;
+    font-size: 14px;
+}
