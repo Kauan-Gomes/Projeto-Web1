@@ -26,10 +26,19 @@
     color: var(--cor-branca);
     margin: 10px 0 10px 0;
     text-align: center;
-    
 }
 .dashboard__principal i {
     color: #e27272;
+    padding: 12px;
+}
+
+#cidade{
+    margin-right: 5px;
+}
+
+.dashboard__principal > div {
+    display: flex;
+    align-items: center;
 }
 
 .dashboard__principal > .temperatura{

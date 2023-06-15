@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="css/geral.css">
-    <script src="js/main.js" defer ></script>
-    <script src="js/RequisicaoAPI.js" defer ></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="js/main.js" defer></script>
+    <script src="js/RequisicaoAPI.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Document</title>
 </head>
+
 <body>
     <header>
         <section class="Fundo__principal">
             <div class="cabecalho">
                 <h1 class="titulo">
                     Clima
-                    
+
                 </h1>
                 <div class="nuvem">
                     <img src="img/nuvem.svg" alt="">
@@ -37,36 +41,39 @@
                         </div>
                     </div>
                 </div>
-              </div>
+            </div>
         </section>
     </header>
     <main>
         <section class="Fundo__dashboard">
             <div class="dashboard">
                 <div class="dashboard__principal">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span id="cidade">Osasco</span>
-                    <img src="" id="pais">
+                    <div>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="cidade">Osasco</span>
+                        <img src="https://flagsapi.com/BR/flat/64.png" alt="">
+                    </div>
                     <p class="temperatura" id="temperatura"><span>27</span>&deg;C</p>
                 </div>
-                
+
                 <div class="dashboard__descricao">
                     <p>Nublado</p>
-                    <img src="" >
+                    <img src="">
                 </div>
                 <div class="dashboard__detalhes">
                     <p id="umidade">
                         <i class="fa-solid fa-droplet"></i>
                         <span>48%</span>
                     </p>
-                    <p id="vento"> 
+                    <p id="vento">
                         <i class="fa-solid fa-wind"></i>
                         <span>3km</span>
                     </p>
                 </div>
             </div>
-            
+
         </section>
     </main>
 </body>
+
 </html>
