@@ -38,7 +38,7 @@
     color: var(--cor-branca);
 }
 
-.adicionar:hover{
+.adicionar:hover, #search:hover{
     background: #5c6ec0;
     border: 1px ;
     color: black;
@@ -60,6 +60,18 @@
 }
 .modal{
     box-shadow: 1px 5px 1px 8px #311c7e77;
+    position: relative;
+}
+
+.modal > button{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border: 0;
+    background-color: transparent;
+    font-size: 25px;
+    color: var(--cor-branca);
+    
 }
 
 .ParteDeForaModal .modal{
@@ -85,17 +97,30 @@
 }
 
 .form__input__container{
-    margin-top: 20px;
+    margin-top: 40px;
+}
+
+.form__input__container > input{
+    height: 50px;
+    width: 180px;
+    border-radius: 10px;
+    border: 1px solid var(--cor-branca);
+    margin-right: 10px;
     
 }
 
-.form__input__container > input, button{
-    height: 30px;
+.form__input__container > input::placeholder{
+    text-align: center;
+   
 }
 
 #search {
     background-color: var(--cor-branca);
-    border: 0;
+    border: 1px solid var(--cor-branca);
     width: 40px;
+    height: 40px;
     font-size: 14px;
+    border-radius: 70%;
+    color: var(--cor-branca);
+    background: transparent;
 }
