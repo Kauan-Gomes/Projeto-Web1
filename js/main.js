@@ -39,3 +39,6 @@ btn__close.addEventListener('click', evento => {
 
 
 
+export {
+  abrirModal
+}

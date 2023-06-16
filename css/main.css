@@ -8,37 +8,46 @@
 }
 
 .dashboard{
-    width: 250px;
-    height: 300px;
+    width: 21rem;
+    height: auto;
     background-image: var(--cor-principal);
     border-radius: 12px;
-    margin: 30px 0 0 30px ;
-    padding: 30px;
+    margin: 30px 0 0 180px ;
+    padding: 30px 50px; 
     display: flex;
     flex-direction: column;
     justify-content: initial;
     align-items:center; 
     box-shadow: 5px 10px 5px 1px #00000062;
+
 }
 
 .dashboard__principal{
-    font-size: 40px;
+    font-size: 35px;
     color: var(--cor-branca);
-    margin: 10px 0 10px 0;
+    margin: 20px 0 10px 0;
     text-align: center;
 }
 .dashboard__principal i {
     color: #e27272;
     padding: 12px;
+    font-size: 23px;
+    
 }
 
 #cidade{
-    margin-right: 5px;
+    margin: 0 10px 0 10px;
+    
 }
 
 .dashboard__principal > div {
     display: flex;
     align-items: center;
+    width: 100%;
+    
+}
+.dashboard__principal > div img{
+    height: 30px;
 }
 
 .dashboard__principal > .temperatura{
@@ -47,5 +56,33 @@
     font-weight: 800;
 }
 
+.dashboard__descricao {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: var(--cor-branca);
+}
+
+.dashboard__descricao img{
+    height: 50px;
+}
 
 
+.dashboard__detalhes {
+    display: flex;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: var(--cor-branca);
+}
+
+.dashboard__detalhes #umidade {
+    border-right: 3px solid #fff;
+    margin-right: 10px; 
+    padding-right:10px;
+}
