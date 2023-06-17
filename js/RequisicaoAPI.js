@@ -1,4 +1,4 @@
-import {abrirModal} from "RequisicaoAPI.js";
+
 
 //62f0613f0cd845b6a9eb49f41db94d82
 
@@ -31,47 +31,100 @@ const bandeira = document.querySelector('#bandeira')
 const input = document.querySelector('#input-cidade')
 const btn__procurar = document.querySelector('#search')
 
-btn__procurar.addEventListener("click", (evento) =>{
-evento.preventDefault();
 
-const cidade = input.value;
-
-clima(cidade)
-
-})
 //funções
 
 //busca os dados na API
-const consultaClima = async(cidade) =>{
+const consultaClima = async (cidade) => {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&appid=${apiKey}&lang=pt_br`
 
-    const response = await fetch(apiUrl)
-    const data = await response.json()
-    
-    return data;
+    try {
+        const response = await fetch(apiUrl)
+        const data = await response.json()
+
+        return data;
+
+    } catch (error) {
+        alert(error)
+    }
 }
 
 //modifica o DOM com os dados transformado em JSON da API
-const clima = async(cidade) => {
+const clima = async (cidade) => {
     const data = await consultaClima(cidade)
 
-    cidadeElemento.innerText = data.name;
-    temperatura.innerText = parseInt(data.main.temp);
-    condicao.innerText = data.weather[0].description;
-    icone.setAttribute("src", `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`);
-    bandeira.setAttribute("src", `https://flagsapi.com/${data.sys.country}/flat/64.png`);
-    umidade.innerText = data.main.humidity + '%';
-    console.log(umidade)
-    vento.innerText = `${data.wind.speed}km/h`
-}   
+    const novaCidade = data.name;
+    const novaTemperatura = parseInt(data.main.temp);
+    const novaCondicao = data.weather[0].description;
+    const novaBandeira = `https://flagsapi.com/${data.sys.country}/flat/64.png`
+    const novaIcone = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+    const novaUmidade = data.main.humidity + '%';
+    const novoVento= `${data.wind.speed}km/h`
 
-input.addEventListener("keyup", evento =>{
+    const novoClima = `
+    <div class="dashboard">
+                <div class="dashboard__principal">
+                    <div>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="cidade">${novaCidade}</span>
+                        <img src="${novaBandeira}" >
+                    </div>
+                    <p class="temperatura" ><span>${novaTemperatura}</span>&deg;C</p>
+                </div>
 
-    if(evento.code == "Enter"){
+                <div class="dashboard__descricao">
+                    <p> ${novaCondicao}</p>
+                    <img src="${novaIcone}">
+                </div>
+                <div class="dashboard__detalhes">
+                    <p class="umidade">
+                        <i class="fa-solid fa-droplet"></i>
+                        <span>${novaUmidade}</span>
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-wind"></i>
+                        <span>${novoVento}</span>
+                    </p>
+                </div>
+            </div>
+    
+    `
+
+
+    
+    const listaClima = document.querySelector('.Fundo__dashboard')
+
+    listaClima.innerHTML = novoClima + listaClima.innerHTML
+
+
+}
+
+
+const modal = document.querySelector('.ParteDeForaModal')
+
+//ativando a busca com o botão
+btn__procurar.addEventListener("click", (evento) => {
+    evento.preventDefault();
+
+    const cidade = input.value;
+
+    clima(cidade)
+
+    modal.style.display = 'none'
+
+})
+//ativando a busca ao pressionar enter no input
+input.addEventListener("keyup", evento => {
+    evento.preventDefault();
+    if (evento.code == "Enter") {
+
+        const cidade = evento.target.value
+        clima(cidade)
+
+        modal.style.display = 'none'
 
     }
 })
-
 
 
 

@@ -30,7 +30,7 @@ window.onclick = function (event) {
 btn__close.addEventListener('click', evento => {
   console.log(evento.target.textContent)
   const modal = document.querySelector('.ParteDeForaModal')
-  console.log(modal)
+  
   if(evento.target.textContent == 'X'){
     modal.style.display = 'none'
   }
@@ -39,6 +39,3 @@ btn__close.addEventListener('click', evento => {
 
 
 
-export {
-  abrirModal
-}
