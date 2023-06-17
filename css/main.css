@@ -9,6 +9,14 @@
     
 }
 
+.Fundo__dashboard__secundario{
+    width: 100%;
+    height: auto;
+    background-color: #000;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .dashboard{
     width: 21rem;
     height: auto;
