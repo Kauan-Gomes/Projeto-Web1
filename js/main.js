@@ -1,3 +1,5 @@
+
+
 const btn__adicionar = document.querySelector('.adicionar')
 const btn__close = document.querySelector('#close')
 const dashboard = document.querySelector('.dashboard')
@@ -37,32 +39,8 @@ btn__close.addEventListener('click', evento => {
 
 })
 
-//Colocando função de MouseLeave
-const climaMouseEnter = (evento) => {
-  const caixa = evento.target
-  const fundo = caixa.querySelector('.dashboard__principal')
 
-  fundo.style.display = 'none'
-  
-}
 
-const climaMouseLeave = (evento) => {
-  const caixa = evento.target
-  const fundo = caixa.querySelector('.dashboard__principal')
 
-  fundo.style.display = 'block'
-  
-  
-  
-}
 
-const eventoDashboard = () => {
-  const dashboards = document.querySelectorAll('.dashboard')
-  console.log(dashboards)
-  dashboards.forEach((dashboard) => {
-    dashboard.addEventListener("mouseenter", climaMouseEnter)
-    dashboard.addEventListener("mouseleave", climaMouseLeave)
-  })
-}
 
-eventoDashboard()
