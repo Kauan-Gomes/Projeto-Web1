@@ -46,35 +46,40 @@
     </header>
     <main>
         <section class="Fundo__dashboard">
-            <!-- <div class="dashboard">
+            <div class="dashboard">
                 <div class="btn">
                     <button id="remove"><i class="fa-solid fa-trash"></i></button>
                     <button id="edit"><i class="fa-solid fa-pen"></i></button>
+                    <div class="modal__edit">    
+                        <button class="x" >X</button>
+                        <input type="text" placeholder="Digite uma nova cidade">
+                        <button id="searchNovo"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
                 </div>
                 <div class="dashboard__principal">
                     <div>
                         <i class="fa-solid fa-location-dot"></i>
-                        <span id="cidade">${cidade.nome}</span>
+                        <span id="cidade">São Paulo</span>
                         <img src="${cidade.bandeira}" >
                     </div>
-                    <p class="temperatura" ><span>${cidade.temperatura}</span>&deg;C</p>
+                    <p class="temperatura" ><span>27</span>&deg;C</p>
                 </div>
 
                 <div class="dashboard__descricao">
-                    <p> ${cidade.condicao}</p>
+                    <p>Nublado</p>
                     <img src="${cidade.icone}">
                 </div>
                 <div class="dashboard__detalhes">
                     <p class="umidade">
                         <i class="fa-solid fa-droplet"></i>
-                        <span>${cidade.umidade}</span>
+                        <span>45%</span>
                     </p>
                     <p>
                         <i class="fa-solid fa-wind"></i>
-                        <span>${cidade.vento}</span>
+                        <span>3km/h</span>
                     </p>
                 </div>
-            </div> -->
+            </div>
         </section>
     </main>
 </body>

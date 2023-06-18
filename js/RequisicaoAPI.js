@@ -65,6 +65,11 @@ function climaElemento(cidade) {
         <div class="btn">
             <button class="remove"><i class="fa-solid fa-trash"></i></button>
             <button class="edit"><i class="fa-solid fa-pen"></i></button>
+            <div class="modal__edit">    
+                <button class="x" >X</button>
+                <input type="text" placeholder="Digite uma nova cidade">
+                <button id="searchNovo"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
         </div>
         <div class="dashboard__principal">
             <div>
@@ -199,8 +204,24 @@ todosDashboard.forEach(elemento => {
 
             btn__edit.addEventListener('click', evento => {
                 const pai = evento.target.parentNode.parentNode.parentNode
-                let input = pai.querySelector('#cidade').parentNode
+                const model_edit = pai.querySelector('.modal__edit')
+                const fechar = pai.querySelector('.x')
+                const input = pai.querySelector('input')
+                const btn__procurar = pai.querySelector('#searchNovo')
+                
+                console.log(model_edit)
                 console.log(input)
+                console.log(btn__procurar)
+                
+                btn__procurar.addEventListener('click', evento => {
+                    console.log(input.value)
+                })
+                
+                model_edit.style.display = 'flex'
+
+                fechar.addEventListener('click', evento => {
+                    model_edit.style.display ='none'
+                })
                 
 
                 const indexCidade = cidades.findIndex(elemento => elemento.nome === cidade)
