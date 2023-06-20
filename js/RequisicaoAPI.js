@@ -28,10 +28,10 @@ const consultaClima = async (cidade) => {
     }
 
 }
-const poluição = async (lat , lon) => {
+const poluição = async (lat, lon) => {
     const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}
     `
-    const response = await fetch (apiUrl)
+    const response = await fetch(apiUrl)
     const data = await response.json()
 
     return data;
@@ -47,8 +47,8 @@ const showErrorMessage = () => {
 const clima = async (cidade) => {
 
     const data = await consultaClima(cidade)
-    const dataPoluicao = await poluição (data.coord.lat , data.coord.lon)
-    console.log(dataPoluicao.list.main)
+    const dataPoluicao = await poluição(data.coord.lat, data.coord.lon)
+
     if (data.cod === "404") {
         showErrorMessage();
         return;
@@ -62,7 +62,7 @@ const clima = async (cidade) => {
         "umidade": data.main.humidity + '%',
         "vento": `${data.wind.speed}km/h`,
         "id": data.name,
-        "indicePoluicao": dataPoluicao.list.main
+        "indicePoluicao": dataPoluicao.list[0].main.aqi
     }
 
 
@@ -80,6 +80,25 @@ const clima = async (cidade) => {
 
 //criando elemento cidades
 function climaElemento(cidade) {
+
+    let aqi = cidade.indicePoluicao
+
+    if (aqi == 1) {
+        aqi = 'Ideal'
+    }
+    else if (aqi == 2) {
+        aqi = 'Bom'
+    }
+    else if (aqi == 3) {
+        aqi = 'Moderado'
+    }
+    else if (aqi == 4) {
+        aqi = 'Ruim'
+    }
+    else if (aqi == 5) {
+        aqi = 'Muito ruim'
+    }
+
     const novoClima = `
     <div class="dashboard" id="${cidade.nome}">
         <div class="btn">
@@ -100,23 +119,32 @@ function climaElemento(cidade) {
             <p class="temperatura" ><span>${cidade.temperatura}</span>&deg;C</p>
         </div>
         <div class="dashboard__descricao">
-                <p> ${cidade.condicao}</p>
-                <img src="${cidade.icone}">
+            <p> ${cidade.condicao}</p>
+            <img src="${cidade.icone}">
         </div>
         <div class="dashboard__detalhes">
-                <p class="umidade">
-                    <i class="fa-solid fa-droplet"></i>
-                    <span>${cidade.umidade}</span>
+            <p class="umidade">
+                <i class="fa-solid fa-droplet"></i>
+                <span>${cidade.umidade}</span>
+            </p>
+            <p>
+                <i class="fa-solid fa-wind"></i>
+                <span>${cidade.vento}</span>
+            </p>
+        </div>
+        
+        <div class="dashboard__poluicao">  
+            <h2>Indice de poluição:</h2>
+            <div class="dashboard__poluicao__indice">
+                <p>
+                    Indice: ${cidade.indicePoluicao}
                 </p>
                 <p>
-                    <i class="fa-solid fa-wind"></i>
-                    <span>${cidade.vento}</span>
+                    Aqi: ${aqi}
                 </p>
-                <p>
-                ${cidade.indicePoluicao}
-                <p/>
             </div>
         </div>
+    </div>
     
     `
     //criando os elementos HTML
@@ -164,7 +192,9 @@ function climaElemento(cidade) {
     listaClima.innerHTML = novoClima + listaClima.innerHTML
 
 }
-
+function atualizar() {
+    window.location.reload(false);
+}
 
 const modal = document.querySelector('.ParteDeForaModal')
 
@@ -184,10 +214,9 @@ btn__procurar.addEventListener("click", (evento) => {
 
     }
     finally {
-        // setTimeout(function() {
-        //     window.location.reload(1);
-        //   }, 60000); // 3 minutos
-        // setTimeout()
+        //função q executa alguma coisa após o tempo determinado
+        //primeiro parametro oq vai executar, segundo depois de quanto tempo em milisegundo
+        setTimeout(atualizar, 2000);
     }
 
 
@@ -197,14 +226,17 @@ btn__procurar.addEventListener("click", (evento) => {
 input.addEventListener("keyup", evento => {
     evento.preventDefault();
     if (evento.code == "Enter") {
+        try {
+            const cidade = evento.target.value
+            clima(cidade)
 
-        const cidade = evento.target.value
-        clima(cidade)
-
-        console.log(cidades)
-        modal.style.display = 'none'
-        input.value = ""
-
+            console.log(cidades)
+            modal.style.display = 'none'
+            input.value = ""
+        }
+        finally {
+            setTimeout(atualizar, 2000);
+        }
     }
 
 })
@@ -214,8 +246,9 @@ const todosDashboard = document.querySelectorAll('.dashboard')
 
 //percorrendo todos os dashboards e dando a função mouseleave e mouseenter
 todosDashboard.forEach(elemento => {
-    elemento.style.backgroundColor ='blue'
+    elemento.style.backgroundColor = 'blue'
     elemento.addEventListener("mouseenter", evento => {
+
 
         const dashboardAcessado = evento.target
         const btn__remove = dashboardAcessado.querySelector('.remove')
@@ -231,16 +264,16 @@ todosDashboard.forEach(elemento => {
         console.log(todosDashboard)
 
         const apiUnsplash = `https://source.unsplash.com/1600x900/?`
-        
+
         fundo.style.backgroundImage = `url("${apiUnsplash + cidade}")`;
-        
+
         // fundo.style.backgroundPosition = 'contain'
         // fundo.style.backgroundRepeat = 'no-repeat'
-        
-        dashboardAcessado.style.zIndex = '2'
-        fundo.style.zIndex = '0'
-        elemento.style.zIndex = '1'
-        
+
+        // dashboardAcessado.style.zIndex = '2'
+        // fundo.style.zIndex = '0'
+        // elemento.style.zIndex = '1'
+
         console.log(fundo)
 
 
@@ -251,7 +284,7 @@ todosDashboard.forEach(elemento => {
                 const pai = evento.target.parentNode.parentNode.parentNode
 
                 apagar(pai, dashboardAcessado.id)
-
+                setTimeout(atualizar, 1000);
 
             })
 
@@ -268,33 +301,27 @@ todosDashboard.forEach(elemento => {
                     const cidade = input.value
                     const pai = evento.target.parentNode.parentNode.parentNode.parentNode
                     const cidadeEliminada = pai.querySelector('#cidade').innerText
+                    try {
+                        clima(cidade)
 
-                    console.log(pai)
-                    console.log(cidade)
-                    console.log(cidadeEliminada)
+                        model_edit.style.display = 'none'
 
-                    clima(cidade)
+                        input.value = ""
 
-                    model_edit.style.display = 'none'
-
-                    input.value = ""
-
-                    apagar(pai, cidadeEliminada)
-
+                        apagar(pai, cidadeEliminada)
+                    }
+                    finally{
+                        setTimeout(atualizar, 2000);
+                    }
                 })
+
+
 
                 model_edit.style.display = 'flex'
 
                 fechar.addEventListener('click', evento => {
                     model_edit.style.display = 'none'
                 })
-
-
-
-                const indexCidade = cidades.findIndex(elemento => elemento.nome === cidade)
-
-                const cidadeEditar = cidades[indexCidade]
-
 
             })
         }
@@ -312,9 +339,6 @@ todosDashboard.forEach(elemento => {
 
         const fundo = dashboardMaior.parentNode
         fundo.style.backgroundImage = 'none'
-
-        
-
     })
 
 

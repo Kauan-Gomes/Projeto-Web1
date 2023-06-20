@@ -38,7 +38,7 @@
     color: var(--cor-branca);
 }
 
-.adicionar:hover, #search:hover{
+.adicionar:hover, #search:hover, #searchNovo:hover{
     background: #5c6ec0;
     border: 1px ;
     color: black;
