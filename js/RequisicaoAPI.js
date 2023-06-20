@@ -1,7 +1,6 @@
 
 const cidades = JSON.parse(localStorage.getItem("cidades")) || []
 const apiKey = '62f0613f0cd845b6a9eb49f41db94d82';
-
 // variaveis de input e botao procurar
 const input = document.querySelector('#input-cidade')
 const btn__procurar = document.querySelector('#search')
@@ -29,29 +28,31 @@ const consultaClima = async (cidade) => {
     }
 
 }
-const fundo = async (cidade) => {
-    const apiUnsplash = `https://source.unsplash.com/1600x900/?${cidade}`
-
-    const response = await fetch(apiUnsplash)
+const poluição = async (lat , lon) => {
+    const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}
+    `
+    const response = await fetch (apiUrl)
     const data = await response.json()
 
-    return data
+    return data;
+
 }
 
 const showErrorMessage = () => {
-   // errorMessageContainer.classList.remove("hide");
-  alert('Cidade não encontrada')
-  };
+    // errorMessageContainer.classList.remove("hide");
+    alert('Cidade não encontrada')
+};
 
 //transformando o JSON da API em um objeto 
 const clima = async (cidade) => {
 
     const data = await consultaClima(cidade)
-
+    const dataPoluicao = await poluição (data.coord.lat , data.coord.lon)
+    console.log(dataPoluicao.list.main)
     if (data.cod === "404") {
         showErrorMessage();
         return;
-      }
+    }
     const cidadeAtual = {
         "nome": data.name,
         "temperatura": parseInt(data.main.temp),
@@ -60,7 +61,8 @@ const clima = async (cidade) => {
         "icone": `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
         "umidade": data.main.humidity + '%',
         "vento": `${data.wind.speed}km/h`,
-        "id": data.name
+        "id": data.name,
+        "indicePoluicao": dataPoluicao.list.main
     }
 
 
@@ -72,7 +74,7 @@ const clima = async (cidade) => {
     //atualizando o localStorage
     localStorage.setItem("cidades", JSON.stringify(cidades))
 
-    
+
 }
 
 
@@ -110,6 +112,9 @@ function climaElemento(cidade) {
                     <i class="fa-solid fa-wind"></i>
                     <span>${cidade.vento}</span>
                 </p>
+                <p>
+                ${cidade.indicePoluicao}
+                <p/>
             </div>
         </div>
     
@@ -167,39 +172,39 @@ const modal = document.querySelector('.ParteDeForaModal')
 btn__procurar.addEventListener("click", (evento) => {
     evento.preventDefault();
 
-    try{
+    try {
         const cidade = input.value;
-    
+
         clima(cidade)
-    
+
         modal.style.display = 'none'
-    
+
         input.value = ""
         console.log(cidades)
 
     }
-    finally{
+    finally {
         // setTimeout(function() {
         //     window.location.reload(1);
         //   }, 60000); // 3 minutos
         // setTimeout()
     }
 
-    
-    
+
+
 })
 //ativando a busca ao pressionar enter no input
 input.addEventListener("keyup", evento => {
     evento.preventDefault();
     if (evento.code == "Enter") {
-        
+
         const cidade = evento.target.value
         clima(cidade)
-        
+
         console.log(cidades)
         modal.style.display = 'none'
         input.value = ""
-        
+
     }
 
 })
@@ -208,8 +213,8 @@ input.addEventListener("keyup", evento => {
 const todosDashboard = document.querySelectorAll('.dashboard')
 
 //percorrendo todos os dashboards e dando a função mouseleave e mouseenter
-
 todosDashboard.forEach(elemento => {
+    elemento.style.backgroundColor ='blue'
     elemento.addEventListener("mouseenter", evento => {
 
         const dashboardAcessado = evento.target
@@ -220,14 +225,33 @@ todosDashboard.forEach(elemento => {
         dashboardAcessado.style.background = "black"
         btn__edit.style.visibility = 'visible'
         btn__remove.style.visibility = 'visible'
+
+
+        const fundo = dashboardAcessado.parentNode
+        console.log(todosDashboard)
+
+        const apiUnsplash = `https://source.unsplash.com/1600x900/?`
         
-        console.log(fundo(cidade))
+        fundo.style.backgroundImage = `url("${apiUnsplash + cidade}")`;
+        
+        // fundo.style.backgroundPosition = 'contain'
+        // fundo.style.backgroundRepeat = 'no-repeat'
+        
+        dashboardAcessado.style.zIndex = '2'
+        fundo.style.zIndex = '0'
+        elemento.style.zIndex = '1'
+        
+        console.log(fundo)
+
+
+
+
         if (dashboardAcessado.id === `${cidade}`) {
             btn__remove.addEventListener('click', evento => {
                 const pai = evento.target.parentNode.parentNode.parentNode
-            
+
                 apagar(pai, dashboardAcessado.id)
-               
+
 
             })
 
@@ -238,7 +262,7 @@ todosDashboard.forEach(elemento => {
                 const input = pai.querySelector('input')
                 const btn__procurar = pai.querySelector('#searchNovo')
 
-                
+
 
                 btn__procurar.addEventListener('click', evento => {
                     const cidade = input.value
@@ -285,6 +309,12 @@ todosDashboard.forEach(elemento => {
         dashboardMaior.style.background = "var(--cor-principal)"
         btn__edit.style.visibility = 'hidden'
         btn__remove.style.visibility = 'hidden'
+
+        const fundo = dashboardMaior.parentNode
+        fundo.style.backgroundImage = 'none'
+
+        
+
     })
 
 
@@ -293,16 +323,16 @@ todosDashboard.forEach(elemento => {
 //função para apagar os climas da cidade e do DOM
 function apagar(tag, id) {
 
-//console.log(tag)
- //removendo a tag
- tag.remove()
- //console.log(id)
- //removendo do objeto cidades
- console.log(cidades.findIndex(elemento => elemento.id === `${id}`))
- cidades.splice(cidades.findIndex(elemento => elemento.id === `${id}`), 1)
+    //console.log(tag)
+    //removendo a tag
+    tag.remove()
+    //console.log(id)
+    //removendo do objeto cidades
+    console.log(cidades.findIndex(elemento => elemento.id === `${id}`))
+    cidades.splice(cidades.findIndex(elemento => elemento.id === `${id}`), 1)
 
- //subindo para o localStorage o novo objeto sem o elemento removido
- localStorage.setItem('cidades', JSON.stringify(cidades))
+    //subindo para o localStorage o novo objeto sem o elemento removido
+    localStorage.setItem('cidades', JSON.stringify(cidades))
 
 
 }
