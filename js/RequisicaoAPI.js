@@ -2,12 +2,12 @@
 const cidades = JSON.parse(localStorage.getItem("cidades")) || []
 const apiKey = '62f0613f0cd845b6a9eb49f41db94d82';
 
-
 // variaveis de input e botao procurar
 const input = document.querySelector('#input-cidade')
 const btn__procurar = document.querySelector('#search')
 
-
+//console.log(cidades[0].nome)
+//console.log(cidades.findIndex(elemento => elemento.nome === 'Osasco'))
 //cria todos os objetos armazenados no localStorage
 cidades.forEach(elemento => {
     climaElemento(elemento)
@@ -29,12 +29,29 @@ const consultaClima = async (cidade) => {
     }
 
 }
+const fundo = async (cidade) => {
+    const apiUnsplash = `https://source.unsplash.com/1600x900/?${cidade}`
+
+    const response = await fetch(apiUnsplash)
+    const data = await response.json()
+
+    return data
+}
+
+const showErrorMessage = () => {
+   // errorMessageContainer.classList.remove("hide");
+  alert('Cidade não encontrada')
+  };
 
 //transformando o JSON da API em um objeto 
 const clima = async (cidade) => {
 
     const data = await consultaClima(cidade)
 
+    if (data.cod === "404") {
+        showErrorMessage();
+        return;
+      }
     const cidadeAtual = {
         "nome": data.name,
         "temperatura": parseInt(data.main.temp),
@@ -55,6 +72,7 @@ const clima = async (cidade) => {
     //atualizando o localStorage
     localStorage.setItem("cidades", JSON.stringify(cidades))
 
+    
 }
 
 
@@ -140,7 +158,6 @@ function climaElemento(cidade) {
 
     listaClima.innerHTML = novoClima + listaClima.innerHTML
 
-
 }
 
 
@@ -150,29 +167,41 @@ const modal = document.querySelector('.ParteDeForaModal')
 btn__procurar.addEventListener("click", (evento) => {
     evento.preventDefault();
 
-    const cidade = input.value;
+    try{
+        const cidade = input.value;
+    
+        clima(cidade)
+    
+        modal.style.display = 'none'
+    
+        input.value = ""
+        console.log(cidades)
 
-    clima(cidade)
+    }
+    finally{
+        // setTimeout(function() {
+        //     window.location.reload(1);
+        //   }, 60000); // 3 minutos
+        // setTimeout()
+    }
 
-    modal.style.display = 'none'
-
-    input.value = ""
-
-
+    
+    
 })
 //ativando a busca ao pressionar enter no input
 input.addEventListener("keyup", evento => {
     evento.preventDefault();
     if (evento.code == "Enter") {
-
+        
         const cidade = evento.target.value
         clima(cidade)
-
+        
+        console.log(cidades)
         modal.style.display = 'none'
         input.value = ""
-
-
+        
     }
+
 })
 
 //capturando todos os dashboards
@@ -188,17 +217,17 @@ todosDashboard.forEach(elemento => {
         const btn__edit = dashboardAcessado.querySelector('.edit')
         const cidade = dashboardAcessado.querySelector('#cidade').innerText
 
-
         dashboardAcessado.style.background = "black"
         btn__edit.style.visibility = 'visible'
         btn__remove.style.visibility = 'visible'
-
-
-        if (evento.target.id === cidade) {
+        
+        console.log(fundo(cidade))
+        if (dashboardAcessado.id === `${cidade}`) {
             btn__remove.addEventListener('click', evento => {
                 const pai = evento.target.parentNode.parentNode.parentNode
-
-                apagar(pai, cidade)
+            
+                apagar(pai, dashboardAcessado.id)
+               
 
             })
 
@@ -208,21 +237,35 @@ todosDashboard.forEach(elemento => {
                 const fechar = pai.querySelector('.x')
                 const input = pai.querySelector('input')
                 const btn__procurar = pai.querySelector('#searchNovo')
+
                 
-                console.log(model_edit)
-                console.log(input)
-                console.log(btn__procurar)
-                
+
                 btn__procurar.addEventListener('click', evento => {
-                    console.log(input.value)
+                    const cidade = input.value
+                    const pai = evento.target.parentNode.parentNode.parentNode.parentNode
+                    const cidadeEliminada = pai.querySelector('#cidade').innerText
+
+                    console.log(pai)
+                    console.log(cidade)
+                    console.log(cidadeEliminada)
+
+                    clima(cidade)
+
+                    model_edit.style.display = 'none'
+
+                    input.value = ""
+
+                    apagar(pai, cidadeEliminada)
+
                 })
-                
+
                 model_edit.style.display = 'flex'
 
                 fechar.addEventListener('click', evento => {
-                    model_edit.style.display ='none'
+                    model_edit.style.display = 'none'
                 })
-                
+
+
 
                 const indexCidade = cidades.findIndex(elemento => elemento.nome === cidade)
 
@@ -248,14 +291,18 @@ todosDashboard.forEach(elemento => {
 })
 
 //função para apagar os climas da cidade e do DOM
-function apagar(tag, cidade) {
+function apagar(tag, id) {
 
-    //removendo a tag
-    tag.remove()
+//console.log(tag)
+ //removendo a tag
+ tag.remove()
+ //console.log(id)
+ //removendo do objeto cidades
+ console.log(cidades.findIndex(elemento => elemento.id === `${id}`))
+ cidades.splice(cidades.findIndex(elemento => elemento.id === `${id}`), 1)
 
-    //removendo do objeto cidades
-    cidades.splice(cidades.splice(cidades.findIndex(elemento => elemento.nome === cidade), 1))
+ //subindo para o localStorage o novo objeto sem o elemento removido
+ localStorage.setItem('cidades', JSON.stringify(cidades))
 
-    //subindo para o localStorage o novo objeto sem o elemento removido
-    localStorage.setItem('cidades', JSON.stringify(cidades))
+
 }
