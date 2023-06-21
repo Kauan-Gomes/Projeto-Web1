@@ -1,12 +1,11 @@
 
 const cidades = JSON.parse(localStorage.getItem("cidades")) || []
 const apiKey = '62f0613f0cd845b6a9eb49f41db94d82';
+
 // variaveis de input e botao procurar
 const input = document.querySelector('#input-cidade')
 const btn__procurar = document.querySelector('#search')
 
-//console.log(cidades[0].nome)
-//console.log(cidades.findIndex(elemento => elemento.nome === 'Osasco'))
 //cria todos os objetos armazenados no localStorage
 cidades.forEach(elemento => {
     climaElemento(elemento)
@@ -15,25 +14,25 @@ cidades.forEach(elemento => {
 
 //busca os dados na API
 const consultaClima = async (cidade) => {
-    try {
+    
         const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&appid=${apiKey}&lang=pt_br`
 
         const response = await fetch(apiUrl)
         const data = await response.json()
-
+    
         return data;
-    }
-    catch (Error) {
-        console.log(Error.message)
-    }
+    
+    
 
 }
+//busca os dados de poluicao
 const poluição = async (lat, lon) => {
     const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}
     `
     const response = await fetch(apiUrl)
     const data = await response.json()
 
+    
     return data;
 
 }
@@ -46,13 +45,10 @@ const showErrorMessage = () => {
 //transformando o JSON da API em um objeto 
 const clima = async (cidade) => {
 
+    try{
     const data = await consultaClima(cidade)
     const dataPoluicao = await poluição(data.coord.lat, data.coord.lon)
 
-    if (data.cod === "404") {
-        showErrorMessage();
-        return;
-    }
     const cidadeAtual = {
         "nome": data.name,
         "temperatura": parseInt(data.main.temp),
@@ -61,7 +57,7 @@ const clima = async (cidade) => {
         "icone": `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
         "umidade": data.main.humidity + '%',
         "vento": `${data.wind.speed}km/h`,
-        "id": data.name,
+        "id": cidades[cidades.length - 1] ? (cidades[cidades.length - 1]).id + 1 : 0,
         "indicePoluicao": dataPoluicao.list[0].main.aqi
     }
 
@@ -73,7 +69,11 @@ const clima = async (cidade) => {
 
     //atualizando o localStorage
     localStorage.setItem("cidades", JSON.stringify(cidades))
-
+    }catch{
+        const modal = document.querySelector('.ParteDeForaModal')
+        modal.style.display = 'block'
+        
+    }
 
 }
 
@@ -100,7 +100,7 @@ function climaElemento(cidade) {
     }
 
     const novoClima = `
-    <div class="dashboard" id="${cidade.nome}">
+    <div class="dashboard" id="${cidade.id}">
         <div class="btn">
             <button class="remove"><i class="fa-solid fa-trash"></i></button>
             <button class="edit"><i class="fa-solid fa-pen"></i></button>
@@ -147,46 +147,7 @@ function climaElemento(cidade) {
     </div>
     
     `
-    //criando os elementos HTML
-    // const fundo = document.querySelector('.Fundo__dashboard')
-    // //começando com o dashboard
-    // const dashboard = document.createElement('div')
-    // dashboard.classList.add('dashboard')
-
-    // fundo.appendChild(dashboard)
-
-    // //div de botões
-    // const btn = document.createElement('div')
-    // btn.classList.add('btn')
-    // dashboard.appendChild(btn)
-    // //botões de apaagr e editar
-    // const btn__remover = document.createElement('button')
-    // btn__remover.classList.add('remove')
-    // btn__remover.innerHTML = '<i class="fa-solid fa-trash"></i>'
-
-
-    // const btn__edit = document.createElement('button')
-    // btn__edit.classList.add('edit')
-    // btn__edit.innerHTML = '<i class="fa-solid fa-pen"></i>'
-
-    // btn.appendChild(btn__edit)
-    // btn.appendChild(btn__remover)
-
-
-    // // criando o dashboard principal
-    // const dashboard__principal = document.createElement('div')
-    // dashboard__principal.classList.add('dashboard__principal')
-    // dashboard.appendChild(dashboard__principal)
-
-    // //div 1
-    // const div1 = document.createElement('div')
-    // dashboard__principal.appendChild(div1)
-
-    // const location = document.createElement('i')
-    // location.classList.add('')
-
-
-
+    
     const listaClima = document.querySelector('.Fundo__dashboard')
 
     listaClima.innerHTML = novoClima + listaClima.innerHTML
@@ -274,12 +235,7 @@ todosDashboard.forEach(elemento => {
         // fundo.style.zIndex = '0'
         // elemento.style.zIndex = '1'
 
-        console.log(fundo)
-
-
-
-
-        if (dashboardAcessado.id === `${cidade}`) {
+        if (dashboardAcessado.id) {
             btn__remove.addEventListener('click', evento => {
                 const pai = evento.target.parentNode.parentNode.parentNode
 
@@ -296,11 +252,10 @@ todosDashboard.forEach(elemento => {
                 const btn__procurar = pai.querySelector('#searchNovo')
 
 
-
                 btn__procurar.addEventListener('click', evento => {
                     const cidade = input.value
                     const pai = evento.target.parentNode.parentNode.parentNode.parentNode
-                    const cidadeEliminada = pai.querySelector('#cidade').innerText
+                    
                     try {
                         clima(cidade)
 
@@ -308,7 +263,7 @@ todosDashboard.forEach(elemento => {
 
                         input.value = ""
 
-                        apagar(pai, cidadeEliminada)
+                        apagar(pai, pai.id)
                     }
                     finally{
                         setTimeout(atualizar, 2000);
@@ -350,10 +305,11 @@ function apagar(tag, id) {
     //console.log(tag)
     //removendo a tag
     tag.remove()
-    //console.log(id)
+
     //removendo do objeto cidades
-    console.log(cidades.findIndex(elemento => elemento.id === `${id}`))
-    cidades.splice(cidades.findIndex(elemento => elemento.id === `${id}`), 1)
+    // console.log(cidades.findIndex(elemento => elemento.id ==  id) + 'to aq')
+    // console.log(cidades)
+    cidades.splice(cidades.findIndex(elemento => elemento.id == id), 1)
 
     //subindo para o localStorage o novo objeto sem o elemento removido
     localStorage.setItem('cidades', JSON.stringify(cidades))

@@ -19,7 +19,7 @@
 
 .dashboard{
     width: 30rem;
-    height: auto;
+    height: 30rem;
     background-image: var(--cor-principal);
     border-radius: 12px;
     margin: 40px 0 50px 140px ;
@@ -133,11 +133,12 @@
 
 .x{
     position: absolute;
-    top: 2px;
-    right: 1px;
+    top: 10px;
+    right: 5px;
     border: 0;
     background: transparent;
     font-size: 20px;
+    color: var(--cor-branca);
 }
 
 .modal__edit input{
