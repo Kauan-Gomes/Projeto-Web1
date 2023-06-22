@@ -200,7 +200,7 @@ const consultaClima = async (cidade) => {
 
 //busca os dados de poluicao
 const poluição = async (lat, lon) => {
-    const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}
+    const apiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}
     `
     const response = await fetch(apiUrl)
     const data = await response.json()
