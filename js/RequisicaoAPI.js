@@ -68,51 +68,44 @@ const editar = (evento) => {
 
     const model_edit = tag.querySelector('.modal__edit')
 
+    btn_confirmar = model_edit.querySelector('.confirmar')
+
     model_edit.style.display = 'flex'
 
+    let cidade = tag.querySelector('.dashboard__principal span')
+    let temperatura = tag.querySelector('.dashboard__principal p span')
+    let condicao = tag.querySelector('.dashboard__descricao p')
+    let umidade = tag.querySelector('.dashboard__detalhes span')
+    let indice = tag.querySelector('.dashboard__poluicao__indice .indice span')
+    let aqi = tag.querySelector('.dashboard__poluicao__indice .aqi span')
+    let vento = tag.querySelector('.dashboard__detalhes .vento span')
+    
+    const inputCidade = model_edit.querySelector('#input__cidade')
+    const inputTemperatura = model_edit.querySelector('#temperatura')
+    const inputCondicao = model_edit.querySelector('#condicao')
+    const inputUmidade = model_edit.querySelector('#umidade')
+    const inputIndice = model_edit.querySelector('#indice')
+    const inputAqi = model_edit.querySelector('#aqi')
+    const inputvento = model_edit.querySelector('#vento')
 
-    const input = tag.querySelector('input')
-    const btn__procurar = tag.querySelector('#searchNovo')
+    inputCidade.value = cidade.innerText
+    inputTemperatura.value = temperatura.innerText
+    inputCondicao.value = condicao.innerText
+    inputUmidade.value = umidade.innerText
+    inputIndice.value = indice.innerText
+    inputAqi.value = aqi.innerText
+    inputvento.value = vento.innerText
 
-
-    btn__procurar.addEventListener('click', evento => {
-        const cidade = input.value
-
-        clima(cidade)
-
-        const tagEliminada = evento.target.closest('.dashboard')
-        tagEliminada.remove()
-
-        const cidadeIndex = cidades.findIndex(elemento => elemento.id == tagEliminada.id)
-        cidades.splice(cidadeIndex, 1)
-
-        localStorage.setItem('cidades', JSON.stringify(cidades))
+    btn_confirmar.addEventListener('click', evento => {
+        cidade.innerText = inputCidade.value
+        temperatura.innerText = inputTemperatura.value 
+        condicao.innerText = inputCondicao.value
+        umidade.innerText = inputUmidade.value
+        indice.innerText = inputIndice.value
+        aqi.innerText = inputAqi.value
+        vento.innerText = inputvento.value
 
         model_edit.style.display = 'none'
-
-        input.value = ""
-
-    })
-    input.addEventListener("keyup", evento => {
-        evento.preventDefault();
-        if (evento.code == "Enter") {
-            const cidade = input.value
-
-            clima(cidade)
-
-            const tagEliminada = evento.target.closest('.dashboard')
-            tagEliminada.remove()
-
-            const cidadeIndex = cidades.findIndex(elemento => elemento.id == tagEliminada.id)
-            cidades.splice(cidadeIndex, 1)
-
-            localStorage.setItem('cidades', JSON.stringify(cidades))
-
-            model_edit.style.display = 'none'
-
-            input.value = ""
-
-        }
 
     })
 
@@ -150,13 +143,14 @@ const dashboardMouseleave = (evento) => {
     const dashboardMaior = evento.target
     const btn__remove = dashboardMaior.querySelector('.remove')
     const btn__edit = dashboardMaior.querySelector('.edit')
+    const body = document.querySelector('body')
 
     dashboardMaior.style.background = "var(--cor-principal)"
     btn__edit.style.visibility = 'hidden'
     btn__remove.style.visibility = 'hidden'
 
     const fundo = dashboardMaior.parentNode
-    fundo.style.backgroundImage = 'none'
+    body.style.backgroundImage = 'none'
 }
 
 //função ao entrar no dashboard
@@ -165,7 +159,7 @@ const dashboardMouseenter = (evento) => {
     const btn__remove = dashboardAcessado.querySelector('.remove')
     const btn__edit = dashboardAcessado.querySelector('.edit')
     const cidade = dashboardAcessado.querySelector('#cidade').innerText
-
+    const body = document.querySelector('body')
     dashboardAcessado.style.background = "black"
     btn__edit.style.visibility = 'visible'
     btn__remove.style.visibility = 'visible'
@@ -173,7 +167,8 @@ const dashboardMouseenter = (evento) => {
 
     const fundo = dashboardAcessado.parentNode
     const apiUnsplash = `https://source.unsplash.com/1600x900/?`
-    fundo.style.backgroundImage = `url("${apiUnsplash + cidade}")`;
+    body.style.backgroundImage = `url("${apiUnsplash + cidade}")`;
+    body.style.backgroundSize = 'cover'
 
 }
 
@@ -270,12 +265,31 @@ function climaElemento(cidade) {
         <div class="btn">
             <button class="remove"><i class="fa-solid fa-trash"></i></button>
             <button class="edit"><i class="fa-solid fa-pen"></i></button>
-            <div class="modal__edit">    
-                <button class="x" >X</button>
-                <input type="text" placeholder="Digite uma nova cidade">
-                <button id="searchNovo"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="modal__edit">
+                <button class="x">X</button>
+                <label for="cidade">Cidade:</label>
+                <input type="text" id="input__cidade">
+                <label for="temperatura">Temperatura: </label>
+                <input type="number" id="temperatura">
+
+                <label for="condicao">Condição:</label>
+                <input type="text" id="condicao">
+
+                <label for="umidade">Umidade:</label>
+                <input type="text" id="umidade">
+
+                <label for="vento">Velocidade do vento</label>
+                <input type="text" id="vento">
+
+
+                <label for="indice">Indice poluição:</label>
+                <input type="number" id="indice">
+
+                <label for="aqi">Aqi:</label>
+                <input type="text" id="aqi">
+                <button class="confirmar">confirmar</button>
             </div>
-        </div>
+        </div>        
         <div class="dashboard__principal">
             <div>
                 <i class="fa-solid fa-location-dot"></i>
@@ -293,7 +307,7 @@ function climaElemento(cidade) {
                 <i class="fa-solid fa-droplet"></i>
                 <span>${cidade.umidade}</span>
             </p>
-            <p>
+            <p class="vento">
                 <i class="fa-solid fa-wind"></i>
                 <span>${cidade.vento}</span>
             </p>
@@ -302,11 +316,11 @@ function climaElemento(cidade) {
         <div class="dashboard__poluicao">  
             <h2>Indice de poluição:</h2>
             <div class="dashboard__poluicao__indice">
-                <p>
-                    Indice: ${cidade.indicePoluicao}
+                <p class="indice">
+                    Indice: <span>${cidade.indicePoluicao}</span>
                 </p>
-                <p>
-                    Aqi: ${aqi}
+                <p class="aqi">
+                    Aqi: <span>${aqi}</span>
                 </p>
             </div>
         </div>

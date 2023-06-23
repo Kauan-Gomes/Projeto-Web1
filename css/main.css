@@ -2,19 +2,10 @@
 
 .Fundo__dashboard{
     width: 100%;
-    height: auto;
-    background-color: var(--cor-branca);
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
     
-}
-
-.Fundo__dashboard__secundario{
-    width: 100%;
-    height: auto;
-    background-color: #000;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .dashboard{
@@ -22,7 +13,7 @@
     height: 30rem;
     background-image: var(--cor-principal);
     border-radius: 12px;
-    margin: 40px 0 50px 140px ;
+    margin: 40px 0 50px 110px ;
     padding: 10px 5px; 
     display: flex;
     flex-direction: column;
@@ -115,20 +106,44 @@
 }
 
 .modal__edit { 
-    display: none;
-    position: absolute;
-    height: 200px;
+    height: 400px;
     width: 300px;
+    font-size: 20px;
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    display: none;
+    flex-direction: column;
     background-image: var(--cor-principal);
-    margin: 0 10px 0 10px;
-    padding: 0 20px 0 20px;
+    border-radius: 12px;
+    margin: 40px 0 50px 110px ;
+    padding: 40px 25px; 
+    justify-content: initial; 
+    box-shadow: 5px 10px 5px 1px #000000c9;
+    border: 1px solid #000000c9;
+    color: var(--cor-branca);
+    text-align: center;
     align-items: center;
-    justify-content: center;
-    box-shadow: 1px 5px 1px 5px #311c7eb9;
-    border-radius: 10px;
-    left: 150px;
-    
 }
+
+.modal__edit input{
+    height: 20px;
+    margin: 5px;
+    width: 60%;
+    text-align: center;
+}
+
+.confirmar {
+    position: absolute;
+    bottom: 9px;
+    right: 5px;
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    color: var(--cor-branca);
+    border-radius: 5px;
+}
+
 
 
 .x{
@@ -141,17 +156,7 @@
     color: var(--cor-branca);
 }
 
-.modal__edit input{
-    height: 40px;
-    margin: 0 7px 0 0;
 
-}
-.modal__edit input{
-    border-radius: 10px;
-    text-align: center;
-    font-size: 20px;
-    text-transform: capitalize;
-}
 #searchNovo {
     background-color: var(--cor-branca);
     border: 1px solid var(--cor-branca);
